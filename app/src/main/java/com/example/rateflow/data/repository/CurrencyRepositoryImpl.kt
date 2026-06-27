@@ -1,0 +1,105 @@
+package com.example.rateflow.data.repository
+
+import com.example.rateflow.data.local.dao.CurrencyDao
+import com.example.rateflow.data.local.dao.RateDao
+import com.example.rateflow.data.local.entity.CurrencyEntity
+import com.example.rateflow.data.local.entity.OfficialRateEntity
+import com.example.rateflow.data.remote.tcmb.TcmbService
+import com.example.rateflow.domain.model.Currency
+import com.example.rateflow.domain.model.OfficialRate
+import com.example.rateflow.domain.model.OfficialRatesResult
+import com.example.rateflow.domain.repository.CurrencyRepository
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
+
+class CurrencyRepositoryImpl @Inject constructor(
+    private val tcmbService: TcmbService,
+    private val currencyDao: CurrencyDao,
+    private val rateDao: RateDao
+) : CurrencyRepository {
+
+    override fun getAllCurrencies(): Flow<List<Currency>> {
+        return currencyDao.getAllCurrencies().map { entities ->
+            entities.map { Currency(it.code, it.name, it.isFavorite, it.isCrypto) }
+        }
+    }
+
+    override fun getFavoriteCurrencies(): Flow<List<Currency>> {
+        return currencyDao.getFavoriteCurrencies().map { entities ->
+            entities.map { Currency(it.code, it.name, it.isFavorite, it.isCrypto) }
+        }
+    }
+
+    override suspend fun toggleFavoriteStatus(code: String, isFavorite: Boolean) {
+        currencyDao.updateFavoriteStatus(code, isFavorite)
+    }
+
+    override suspend fun syncCurrencies() = withContext(Dispatchers.IO) {
+        try {
+            val response = tcmbService.getTodayRates()
+            val currencies = response.currencies.map { tcmbRate ->
+                CurrencyEntity(
+                    code = tcmbRate.code,
+                    name = tcmbRate.name,
+                    isFavorite = false,
+                    isCrypto = false
+                )
+            }
+            // Add TRY as a base currency
+            val tryCurrency = CurrencyEntity("TRY", "TÜRK LİRASI", false, false)
+            currencyDao.insertCurrencies(currencies + tryCurrency)
+        } catch (e: Exception) {
+            // Handle error
+        }
+    }
+
+    override suspend fun getOfficialRates(forceRefresh: Boolean): OfficialRatesResult = withContext(Dispatchers.IO) {
+        val cacheValidityMs = 3600 * 1000 // 1 hour
+        val cached = rateDao.getOfficialRates()
+        
+        if (!forceRefresh && cached.isNotEmpty() && (System.currentTimeMillis() - cached.first().lastUpdated) < cacheValidityMs) {
+            val date = cached.first().date
+            return@withContext OfficialRatesResult(date, cached.map { it.toDomain() })
+        }
+
+        try {
+            val response = tcmbService.getTodayRates()
+            val entities = response.currencies.map {
+                OfficialRateEntity(
+                    code = it.code,
+                    name = it.name,
+                    forexBuying = it.forexBuying,
+                    forexSelling = it.forexSelling,
+                    banknoteBuying = it.banknoteBuying,
+                    banknoteSelling = it.banknoteSelling,
+                    crossRateUSD = it.crossRateUSD,
+                    date = response.date,
+                    lastUpdated = System.currentTimeMillis()
+                )
+            }
+            rateDao.insertOfficialRates(entities)
+            OfficialRatesResult(response.date, entities.map { it.toDomain() })
+        } catch (e: Exception) {
+            if (cached.isNotEmpty()) {
+                val date = cached.first().date
+                OfficialRatesResult(date, cached.map { it.toDomain() })
+            } else {
+                throw e
+            }
+        }
+    }
+
+    private fun OfficialRateEntity.toDomain() = OfficialRate(
+        code = code,
+        name = name,
+        forexBuying = forexBuying,
+        forexSelling = forexSelling,
+        banknoteBuying = banknoteBuying,
+        banknoteSelling = banknoteSelling,
+        crossRateUSD = crossRateUSD,
+        date = date
+    )
+}
