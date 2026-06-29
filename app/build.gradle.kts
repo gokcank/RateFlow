@@ -21,10 +21,10 @@ android {
     val admobBannerAdUnitId = properties.getProperty("ADMOB_BANNER_AD_UNIT_ID") ?: "ca-app-pub-3940256099942544/6300978111"
     val admobInterstitialAdUnitId = properties.getProperty("ADMOB_INTERSTITIAL_AD_UNIT_ID") ?: "ca-app-pub-3940256099942544/1033173712"
 
-    namespace = "com.example.rateflow"
+    namespace = "com.gokcank.valutarate"
     compileSdk = 36
     defaultConfig {
-        applicationId = "com.example.rateflow"
+        applicationId = "com.gokcank.valutarate"
         minSdk = 26
         targetSdk = 36
         versionCode = 1

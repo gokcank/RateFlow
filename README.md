@@ -1,6 +1,6 @@
-# RateFlow 💱
+# Valuta Rate 💱
 
-RateFlow is a modern, premium, and highly dynamic currency converter application built natively for Android. Designed with a stunning **Glassmorphism** UI and fluid animations, RateFlow offers a seamless experience for tracking and converting currencies using the official indicative exchange rates provided by the **TCMB (Central Bank of the Republic of Turkey)**.
+Valuta Rate is a modern, premium, and highly dynamic currency converter application built natively for Android. Designed with a stunning **Glassmorphism** UI and fluid animations, Valuta Rate offers a seamless experience for tracking and converting currencies using the official indicative exchange rates provided by the **TCMB (Central Bank of the Republic of Turkey)**.
 
 ## ✨ Features
 

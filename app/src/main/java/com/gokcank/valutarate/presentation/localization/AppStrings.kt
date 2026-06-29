@@ -1,0 +1,128 @@
+package com.gokcank.valutarate.presentation.localization
+
+import androidx.compose.runtime.staticCompositionLocalOf
+
+enum class AppLanguage(val code: String, val displayName: String) {
+    TR("tr", "Türkçe"),
+    EN("en", "English"),
+    DE("de", "Deutsch"),
+    FR("fr", "Français")
+}
+
+data class AppStrings(
+    val appName: String = "RateFlow",
+    val tabHome: String,
+    val tabConvert: String,
+    val tabSettings: String,
+    val amount: String,
+    val from: String,
+    val to: String,
+    val usingTcmbOfficial: String,
+    val usingGlobalLive: String,
+    val convertedAmount: String,
+    val tcmbRatesHeader: String,
+    val errorLoading: String,
+    val themePalette: String,
+    val language: String,
+    val dataSources: String,
+    val tcmbTitle: String = "TCMB",
+    val tcmbDescription: String,
+    val about: String,
+    val developer: String,
+    val reportBug: String,
+    val bugReportSubject: String
+)
+
+val enStrings = AppStrings(
+    tabHome = "Home",
+    tabConvert = "Convert",
+    tabSettings = "Settings",
+    usingTcmbOfficial = "Using TCMB Official Cross Rates",
+    usingGlobalLive = "Using Global Live Rates",
+    amount = "Amount",
+    from = "From",
+    to = "To",
+    convertedAmount = "Converted Amount",
+    dataSources = "Data Sources",
+    tcmbTitle = "TCMB (Central Bank of the Republic of Turkey)",
+    tcmbDescription = "Provides official indicative exchange rates for the Turkish Lira. Rates are updated every business day at 15:30.",
+    themePalette = "Theme Palette",
+    language = "Language",
+    about = "About",
+    developer = "Developer",
+    tcmbRatesHeader = "Indicative TCMB Rates determined at 15:30 on",
+    errorLoading = "Error loading data",
+    reportBug = "Report Bug",
+    bugReportSubject = "BUG REPORT/FEEDBACK"
+)
+
+val trStrings = AppStrings(
+    tabHome = "Ana Sayfa",
+    tabConvert = "Çevirici",
+    tabSettings = "Ayarlar",
+    usingTcmbOfficial = "TCMB Gösterge Kurları Kullanılıyor",
+    usingGlobalLive = "Küresel Canlı Kurlar Kullanılıyor",
+    amount = "Miktar",
+    from = "Nereden",
+    to = "Nereye",
+    convertedAmount = "Çevrilen Tutar",
+    dataSources = "Veri Kaynakları",
+    tcmbTitle = "TCMB (Türkiye Cumhuriyet Merkez Bankası)",
+    tcmbDescription = "Türk Lirası için resmi gösterge kurlarını sağlar. Kurlar her iş günü saat 15:30'da güncellenir.",
+    themePalette = "Tema Paleti",
+    language = "Dil",
+    about = "Hakkında",
+    developer = "Geliştirici",
+    tcmbRatesHeader = "Günü Saat 15:30'da Belirlenen Gösterge Niteliğindeki TCMB Kurları",
+    errorLoading = "Kurlar yüklenirken hata oluştu",
+    reportBug = "Hata Bildir",
+    bugReportSubject = "HATA BİLDİRİMİ"
+)
+
+val deStrings = AppStrings(
+    tabHome = "Startseite",
+    tabConvert = "Umrechner",
+    tabSettings = "Einstellungen",
+    usingTcmbOfficial = "TCMB Offizielle Kreuzkurse werden verwendet",
+    usingGlobalLive = "Globale Live-Kurse werden verwendet",
+    amount = "Betrag",
+    from = "Von",
+    to = "Nach",
+    convertedAmount = "Umgerechneter Betrag",
+    dataSources = "Datenquellen",
+    tcmbTitle = "TCMB (Zentralbank der Republik Türkei)",
+    tcmbDescription = "Stellt offizielle indikative Wechselkurse für die türkische Lira bereit. Die Kurse werden jeden Werktag um 15:30 Uhr aktualisiert.",
+    themePalette = "Farbpalette",
+    language = "Sprache",
+    about = "Über",
+    developer = "Entwickler",
+    tcmbRatesHeader = "Indikative TCMB-Kurse, ermittelt um 15:30 Uhr am",
+    errorLoading = "Fehler beim Laden der Kurse",
+    reportBug = "Fehler Melden",
+    bugReportSubject = "BUG REPORT/FEEDBACK"
+)
+
+val frStrings = AppStrings(
+    tabHome = "Accueil",
+    tabConvert = "Convertisseur",
+    tabSettings = "Paramètres",
+    usingTcmbOfficial = "Utilisation des taux croisés officiels de la TCMB",
+    usingGlobalLive = "Utilisation des taux mondiaux en direct",
+    amount = "Montant",
+    from = "De",
+    to = "À",
+    convertedAmount = "Montant converti",
+    dataSources = "Sources de données",
+    tcmbTitle = "TCMB (Banque centrale de la République de Turquie)",
+    tcmbDescription = "Fournit les taux de change indicatifs officiels pour la livre turque. Les taux sont mis à jour chaque jour ouvrable à 15h30.",
+    themePalette = "Palette de thèmes",
+    language = "Langue",
+    about = "À propos",
+    developer = "Développeur",
+    tcmbRatesHeader = "Taux indicatifs de la TCMB déterminés à 15h30 le",
+    errorLoading = "Erreur de chargement des taux",
+    reportBug = "Signaler un bug",
+    bugReportSubject = "BUG REPORT/FEEDBACK"
+)
+
+val LocalAppStrings = staticCompositionLocalOf { enStrings }
